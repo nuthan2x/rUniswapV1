@@ -106,12 +106,12 @@ contract Exchange is ERC20 {
         payable(msg.sender).transfer(ethOut);
     }
 
-    function tokenToTokenSwap(uint tokensIn, address tokensOutAddress, uint _minTokensOut) public {
+    function tokenToTokenSwap(uint256 tokensIn, address tokensOutAddress, uint256 _minTokensOut) public {
         address exchangeAddress = IFactory(factoryAddress).getExchange(tokensOutAddress);
         require(exchangeAddress != address(this) && exchangeAddress != address(0), "invalid exchange address");
 
-        uint tokenReserve = getReserve();
-        uint ethOut = getAmount(tokensIn, tokenReserve, address(this).balance);
+        uint256 tokenReserve = getReserve();
+        uint256 ethOut = getAmount(tokensIn, tokenReserve, address(this).balance);
         IERC20(tokenAddress).transferFrom(msg.sender, address(this), tokensIn );
         
         Exchange(exchangeAddress).ethToTokenTransfer{value : ethOut}(_minTokensOut, msg.sender);

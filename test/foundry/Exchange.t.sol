@@ -53,7 +53,7 @@ contract Exchange_Test is BaseSetup {
     receive() external payable{}
 
     function test_addLiquidity()  public {
-        uint deposit = 200e18;
+        uint256 deposit = 200e18;
         console.log('exchange.getReserve() before: ', exchange.getReserve());
         exchange.addLiquidity(deposit);
 
@@ -72,8 +72,8 @@ contract Exchange_Test is BaseSetup {
         vm.deal(address(exchange), 100e18);
         exchange.addLiquidity(200e18);
         
-        uint ethIn = 1e18;
-        uint tokenOut = exchange.getTokenAmount(ethIn);
+        uint256 ethIn = 1e18;
+        uint256 tokenOut = exchange.getTokenAmount(ethIn);
         console.log('tokenOut: ', tokenOut );
         
         // assertEq(tokenOut, 19605);  
@@ -89,8 +89,8 @@ contract Exchange_Test is BaseSetup {
         exchange.addLiquidity(200e18);
         
 
-        uint tokenIn = 2e18;
-        uint ethOut = exchange.getEthAmount(tokenIn);
+        uint256 tokenIn = 2e18;
+        uint256 ethOut = exchange.getEthAmount(tokenIn);
         console.log('ethOut: ', ethOut);
 
         // assertEq(ethOut, 9850);
@@ -112,14 +112,14 @@ contract Exchange_Test is BaseSetup {
         assertEq(exchange.getReserve(), 200e18);
 
         //getting price now ( 1 ETH = ?? MOCK tokens)
-        uint tokensOut1 =  exchange.getTokenAmount(1e18);
+        uint256 tokensOut1 =  exchange.getTokenAmount(1e18);
         assertEq(tokensOut1, 1960590157441330824);  
         // 1.9605 MOCK tokens/ 1 ETH
 
         // add liquidity second time
         exchange.addLiquidity{value : 100e18}(200e18);
         //getting price now ( 1 ETH = ?? MOCK tokens)
-        uint tokensOut2 =  exchange.getTokenAmount(1e18);
+        uint256 tokensOut2 =  exchange.getTokenAmount(1e18);
         assertEq(tokensOut2, 1970247275983879795); 
         // 1.9702 MOCK tokens/ 1 ETH 
         // as low is the impact of your swap amount on the LP better is the price rate i.e less slippage
@@ -132,7 +132,7 @@ contract Exchange_Test is BaseSetup {
         assertEq(token.balanceOf(address(this)), 1603921180314882661649);
         // sent 2 ETH in, got 3.9211.. tokens Out
         // Swap 10 token in
-        uint ethOut = exchange.getEthAmount(1e18);
+        uint256 ethOut = exchange.getEthAmount(1e18);
         console.log('ethOut: ', ethOut);
         assertEq(address(exchange).balance, 202000000000000000000); // 202 eth reserve 
         assertEq(token.balanceOf(address(exchange)), 396078819685117338351); // 396.078 token reserve 
@@ -156,7 +156,7 @@ contract Exchange_Test is BaseSetup {
         // Swap 2 eth in
         assertEq(token.balanceOf(user1), 0);
         assertEq(address(user1).balance, 100e18);
-        uint ethtoToken_withoutfee = (2e18 * token.balanceOf(address(exchange))) / (address(exchange).balance  + 2e18);
+        uint256 ethtoToken_withoutfee = (2e18 * token.balanceOf(address(exchange))) / (address(exchange).balance  + 2e18);
         assertEq( ethtoToken_withoutfee, 3902564359982775985);  // 2 ETH = 3.9025 tokens without fees
 
         exchange.ethToTokenSwap{value : 2e18}(3e18);
@@ -171,7 +171,7 @@ contract Exchange_Test is BaseSetup {
 
 
         // remove Liquidity  msg.sender = address(this)
-        uint LPrewarded = exchange.balanceOf(address(this));
+        uint256 LPrewarded = exchange.balanceOf(address(this));
         assertEq(LPrewarded, 200 * 1e18); 
         // tells us we have 200 ETH-MOCK LP tokens ( that is rewarded when liquidity is added)
         assertEq(address(this).balance, 798503640653926409305);
@@ -205,12 +205,12 @@ contract Exchange_Test is BaseSetup {
         assertEq(exchange2.getReserve(), 200e18);
 
         //getting price now ( 1 ETH = ?? MOCK tokens)
-        uint tokensOut1 =  exchange.getTokenAmount(1e18);
+        uint256 tokensOut1 =  exchange.getTokenAmount(1e18);
         assertEq(tokensOut1, 1960590157441330824);  
         // 1.9605 MOCK tokens/ 1 ETH
 
         //getting price now ( 1 ETH = ?? ROCK tokens)
-        uint tokensOut2 =  exchange2.getTokenAmount(1e18);
+        uint256 tokensOut2 =  exchange2.getTokenAmount(1e18);
         assertEq(tokensOut2, 1960590157441330824);  
         // 1.9605 ROCK tokens/ 1 ETH
 
@@ -247,7 +247,7 @@ contract Exchange_Test is BaseSetup {
         assertEq(exchange2.getReserve(), 200e18);
 
         //getting price now ( 1 ETH = ?? MOCK tokens)
-        uint tokensOut1 =  exchange.getTokenAmount(1e18);
+        uint256 tokensOut1 =  exchange.getTokenAmount(1e18);
         assertEq(tokensOut1, 1960590157441330824);  
         // 1.9605 MOCK tokens/ 1 ETH
 
@@ -261,9 +261,9 @@ contract Exchange_Test is BaseSetup {
         console.log('address(this).balance: before', address(user1).balance); // 100 ETH
         
         //getting price now ( 1 ETH = ?? ROCK tokens)
-        uint tokensOut2 =  exchange2.getTokenAmount(5e18);
+        uint256 tokensOut2 =  exchange2.getTokenAmount(5e18);
         assertEq(tokensOut2, 9433063363506431634);  
-        uint tokensOut3 =  exchange2.getTokenAmount(1e18);
+        uint256 tokensOut3 =  exchange2.getTokenAmount(1e18);
         assertEq(tokensOut3, 1960590157441330824); 
         // 1.8866 ROCK tokens/ 1 ETH when 5ETH swappedin
         // 1.9605 ROCK tokens/ 1 ETH when 1ETH swappedin
